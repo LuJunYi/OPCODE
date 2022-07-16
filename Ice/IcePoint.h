@@ -13,7 +13,7 @@
 #define __ICEPOINT_H__
 
 	// Forward declarations
-	class HPoint;
+	class IceHPoint;
 	class Plane;
 	class Matrix3x3;
 	class Matrix4x4;
@@ -374,7 +374,7 @@
 				Point&			ProjectToPlane(const Plane& p);
 
 		//! Projects the point onto the screen
-				void			ProjectToScreen(float halfrenderwidth, float halfrenderheight, const Matrix4x4& mat, HPoint& projected) const;
+				void			ProjectToScreen(float halfrenderwidth, float halfrenderheight, const Matrix4x4& mat, IceHPoint& projected) const;
 
 		//! Unfolds the point onto a plane according to edge(a,b)
 				Point&			Unfold(Plane& p, Point& a, Point& b);
@@ -512,8 +512,8 @@
 
 		// Cast operators
 
-		//! Cast a Point to a HPoint. w is set to zero.
-								operator	HPoint()				const;
+		//! Cast a Point to a IceHPoint. w is set to zero.
+								operator	IceHPoint()				const;
 
 		inline_					operator	const	float*() const	{ return &x; }
 		inline_					operator			float*()		{ return &x; }

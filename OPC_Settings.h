@@ -41,8 +41,9 @@
 	//! Discard negative pointer in vanilla trees
 	#define OPC_NO_NEG_VANILLA_TREE
 
+     //OPC_RAYHIT_CALLBACK注释掉了，为了使用SetDestination，tangxw，2017-8-28
 	//! Use a callback in the ray collider
-	#define OPC_RAYHIT_CALLBACK
+	//#define OPC_RAYHIT_CALLBACK
 
 	// NB: no compilation flag to enable/disable stats since they're actually needed in the box/box overlap test
 

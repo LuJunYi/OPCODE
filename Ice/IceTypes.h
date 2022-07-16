@@ -48,9 +48,18 @@
 	typedef signed short		sword;		//!< sizeof(sword)	must be 2
 	typedef unsigned short		uword;		//!< sizeof(uword)	must be 2
 	typedef signed int			sdword;		//!< sizeof(sdword)	must be 4
-	typedef unsigned int		udword;		//!< sizeof(udword)	must be 4
+
+#ifdef _M_IX86
+	typedef unsigned int udword;
+#else
+	typedef unsigned long long udword;
+#endif
+	//dx edit  增加
+	typedef unsigned int   u4dword;   //sizeof（u4dword） must be 4
+	
+
 	typedef signed __int64		sqword;		//!< sizeof(sqword)	must be 8
-	typedef unsigned __int64	uqword;		//!< sizeof(uqword)	must be 8
+	typedef unsigned __int64 	uqword;		//!< sizeof(uqword)	must be 8
 	typedef float				float32;	//!< sizeof(float32)	must be 4
 	typedef double				float64;	//!< sizeof(float64)	must be 4
 
@@ -59,7 +68,15 @@
 	ICE_COMPILE_TIME_ASSERT(sizeof(sbyte)==1);
 	ICE_COMPILE_TIME_ASSERT(sizeof(sword)==2);
 	ICE_COMPILE_TIME_ASSERT(sizeof(uword)==2);
+#ifdef _M_IX86
 	ICE_COMPILE_TIME_ASSERT(sizeof(udword)==4);
+#else
+	ICE_COMPILE_TIME_ASSERT(sizeof(udword) == 8);
+#endif
+
+	ICE_COMPILE_TIME_ASSERT(sizeof(u4dword) == 4);
+
+
 	ICE_COMPILE_TIME_ASSERT(sizeof(sdword)==4);
 	ICE_COMPILE_TIME_ASSERT(sizeof(uqword)==8);
 	ICE_COMPILE_TIME_ASSERT(sizeof(sqword)==8);
@@ -67,14 +84,14 @@
 	//! TO BE DOCUMENTED
 	#define DECLARE_ICE_HANDLE(name)	struct name##__ { int unused; }; typedef struct name##__ *name
 
-	typedef udword				DynID;		//!< Dynamic identifier
+	typedef u4dword				DynID;		//!< Dynamic identifier
 #ifdef USE_HANDLE_MANAGER
-	typedef udword				KID;		//!< Kernel ID
+	typedef u4dword				KID;		//!< Kernel ID
 //	DECLARE_ICE_HANDLE(KID);
 #else
 	typedef uword				KID;		//!< Kernel ID
 #endif
-	typedef udword				RTYPE;		//!< Relationship-type (!) between owners and references
+	typedef u4dword				RTYPE;		//!< Relationship-type (!) between owners and references
 	#define	INVALID_ID			0xffffffff	//!< Invalid dword ID (counterpart of null pointers)
 #ifdef USE_HANDLE_MANAGER
 	#define	INVALID_KID			0xffffffff	//!< Invalid Kernel ID
@@ -113,6 +130,12 @@
 	#define	MIN_SDWORD				0x80000000					//!< min possible sdword value
 	#define	MAX_UDWORD				0xffffffff					//!< max possible udword value
 	#define	MIN_UDWORD				0x00000000					//!< min possible udword value
+
+
+
+//	#define	MAX_UDWORD				0xffffffffffffffff					//!< max possible udword value
+//	#define	MIN_UDWORD				0x0000000000000000					//!< min possible udword value
+
 	#define	MAX_FLOAT				FLT_MAX						//!< max possible float value
 	#define	MIN_FLOAT				(-FLT_MAX)					//!< min possible loat value
 	#define IEEE_1_0				0x3f800000					//!< integer representation of 1.0
@@ -123,7 +146,8 @@
 
 	#define ONE_OVER_RAND_MAX		(1.0f / float(RAND_MAX))	//!< Inverse of the max possible value returned by rand()
 
-	typedef int					(__stdcall* PROC)();			//!< A standard procedure call.
+	//注释掉下面一行，tangxw，2017-8-28
+	//typedef int					(__stdcall* PROC)();			//!< A standard procedure call.
 	typedef bool				(*ENUMERATION)(udword value, udword param, udword context);	//!< ICE standard enumeration call
 	typedef	void**				VTABLE;							//!< A V-Table.
 
@@ -132,9 +156,10 @@
 	#define		MIN(a, b)       ((a) < (b) ? (a) : (b))			//!< Returns the min value between a and b
 	#define		MAX(a, b)       ((a) > (b) ? (a) : (b))			//!< Returns the max value between a and b
 	#define		MAXMAX(a,b,c)   ((a) > (b) ? MAX (a,c) : MAX (b,c))	//!<	Returns the max value between a, b and c
+    #define		MINMIN(a,b,c)   ((a) < (b) ? MIN (a,c) : MIN (b,c))	//!<	Returns the min value between a, b and c
 
-	template<class T>	inline_ const T&	TMin	(const T& a, const T& b)	{ return b < a ? b : a;	}
-	template<class T>	inline_ const T&	TMax	(const T& a, const T& b)	{ return a < b ? b : a;	}
+	template<class T>	inline_ const T&	  TMin(const T& a, const T& b)	{ return b < a ? b : a;	}
+	template<class T>	inline_ const T& 	TMax	(const T& a, const T& b)	{ return a < b ? b : a;	}
 	template<class T>	inline_ void		TSetMin	(T& a, const T& b)			{ if(a>b)	a = b;		}
 	template<class T>	inline_ void		TSetMax	(T& a, const T& b)			{ if(a<b)	a = b;		}
 

@@ -711,6 +711,7 @@ void RayCollider::_RayStab(const AABBNoLeafNode* node)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void RayCollider::_RayStab(const AABBQuantizedNoLeafNode* node)
 {
+	//问题就在这里
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
 	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);

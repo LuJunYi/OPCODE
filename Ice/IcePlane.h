@@ -55,7 +55,7 @@
 
 		// Cast operators
 		inline_			operator Point()					const						{ return n;										}
-		inline_			operator HPoint()					const						{ return HPoint(n, d);							}
+		inline_			operator IceHPoint()					const						{ return IceHPoint(n, d);							}
 
 		// Arithmetic operators
 		inline_	Plane	operator*(const Matrix4x4& m)		const
@@ -68,8 +68,8 @@
 		inline_	Plane&	operator*=(const Matrix4x4& m)
 						{
 							// Old code from Irion. Kept for reference.
-							Point n2 = HPoint(n, 0.0f) * m;
-							d = -((Point) (HPoint( -d*n, 1.0f ) * m) | n2);
+							Point n2 = IceHPoint(n, 0.0f) * m;
+							d = -((Point) (IceHPoint( -d*n, 1.0f ) * m) | n2);
 							n = n2;
 							return *this;
 						}

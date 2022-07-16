@@ -391,7 +391,7 @@ float AABB::ComputeBoxArea(const Point& eye, const Matrix4x4& mat, float width, 
 	// Transform all outline corners into 2D screen space
 	for(sdword i=0;i<num;i++)
 	{
-		HPoint Projected;
+		IceHPoint Projected;
 		vertexBox[Outline[i]].ProjectToScreen(width, height, mat, Projected);
 		dst[i] = Projected;
 	}

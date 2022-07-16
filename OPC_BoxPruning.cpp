@@ -34,7 +34,7 @@
 
 using namespace Opcode;
 
-	inline_ void FindRunningIndex(udword& index, float* array, udword* sorted, int last, float max)
+	inline_ void FindRunningIndex(u4dword& index, float* array, udword* sorted, int last, float max)
 	{
 		int First=index;
 		while(First<=last)

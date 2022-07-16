@@ -70,35 +70,35 @@
 
 		// Row-column access
 		//! Returns a row.
-		inline_	void				GetRow(const udword r, HPoint& p)	const	{ p.x=m[r][0];	p.y=m[r][1];	p.z=m[r][2];	p.w=m[r][3];		}
+		inline_	void				GetRow(const udword r, IceHPoint& p)	const	{ p.x=m[r][0];	p.y=m[r][1];	p.z=m[r][2];	p.w=m[r][3];		}
 		//! Returns a row.
 		inline_	void				GetRow(const udword r, Point& p)	const	{ p.x=m[r][0];	p.y=m[r][1];	p.z=m[r][2];						}
 		//! Returns a row.
-		inline_	const HPoint&		GetRow(const udword r)				const	{ return *(const HPoint*)&m[r][0];									}
+		inline_	const IceHPoint&		GetRow(const udword r)				const	{ return *(const IceHPoint*)&m[r][0];									}
 		//! Returns a row.
-		inline_	HPoint&				GetRow(const udword r)						{ return *(HPoint*)&m[r][0];										}
+		inline_	IceHPoint&				GetRow(const udword r)						{ return *(IceHPoint*)&m[r][0];										}
 		//! Sets a row.
-		inline_	void				SetRow(const udword r, const HPoint& p)		{ m[r][0]=p.x;	m[r][1]=p.y;	m[r][2]=p.z;	m[r][3]=p.w;		}
+		inline_	void				SetRow(const udword r, const IceHPoint& p)		{ m[r][0]=p.x;	m[r][1]=p.y;	m[r][2]=p.z;	m[r][3]=p.w;		}
 		//! Sets a row.
 		inline_	void				SetRow(const udword r, const Point& p)		{ m[r][0]=p.x;	m[r][1]=p.y;	m[r][2]=p.z;	m[r][3]= (r!=3) ? 0.0f : 1.0f;		}
 		//! Returns a column.
-		inline_	void				GetCol(const udword c, HPoint& p)	const	{ p.x=m[0][c];	p.y=m[1][c];	p.z=m[2][c];	p.w=m[3][c];		}
+		inline_	void				GetCol(const udword c, IceHPoint& p)	const	{ p.x=m[0][c];	p.y=m[1][c];	p.z=m[2][c];	p.w=m[3][c];		}
 		//! Returns a column.
 		inline_	void				GetCol(const udword c, Point& p)	const	{ p.x=m[0][c];	p.y=m[1][c];	p.z=m[2][c];						}
 		//! Sets a column.
-		inline_	void				SetCol(const udword c, const HPoint& p)		{ m[0][c]=p.x;	m[1][c]=p.y;	m[2][c]=p.z;	m[3][c]=p.w;		}
+		inline_	void				SetCol(const udword c, const IceHPoint& p)		{ m[0][c]=p.x;	m[1][c]=p.y;	m[2][c]=p.z;	m[3][c]=p.w;		}
 		//! Sets a column.
 		inline_	void				SetCol(const udword c, const Point& p)		{ m[0][c]=p.x;	m[1][c]=p.y;	m[2][c]=p.z;	m[3][c]= (c!=3) ? 0.0f : 1.0f;	}
 
 		// Translation
 		//! Returns the translation part of the matrix.
-		inline_	const HPoint&		GetTrans()							const	{ return GetRow(3);								}
+		inline_	const IceHPoint&		GetTrans()							const	{ return GetRow(3);								}
 		//! Gets the translation part of the matrix
 		inline_	void				GetTrans(Point& p)					const	{ p.x=m[3][0];	p.y=m[3][1];	p.z=m[3][2];	}
 		//! Sets the translation part of the matrix, from a Point.
 		inline_	void				SetTrans(const Point& p)					{ m[3][0]=p.x;	m[3][1]=p.y;	m[3][2]=p.z;	}
-		//! Sets the translation part of the matrix, from a HPoint.
-		inline_	void				SetTrans(const HPoint& p)					{ m[3][0]=p.x;	m[3][1]=p.y;	m[3][2]=p.z;	m[3][3]=p.w;	}
+		//! Sets the translation part of the matrix, from a IceHPoint.
+		inline_	void				SetTrans(const IceHPoint& p)					{ m[3][0]=p.x;	m[3][1]=p.y;	m[3][2]=p.z;	m[3][3]=p.w;	}
 		//! Sets the translation part of the matrix, from floats.
 		inline_	void				SetTrans(float tx, float ty, float tz)		{ m[3][0]=tx;	m[3][1]=ty;		m[3][2]=tz;		}
 
@@ -123,9 +123,9 @@
 									}
 /*
 		//! Returns a row.
-		inline_	HPoint		GetRow(const udword row)	const			{ return mRow[row];														}
+		inline_	IceHPoint		GetRow(const udword row)	const			{ return mRow[row];														}
 		//! Sets a row.
-		inline_	Matrix4x4&	SetRow(const udword row, const HPoint& p)	{ mRow[row] = p;	return *this;										}
+		inline_	Matrix4x4&	SetRow(const udword row, const IceHPoint& p)	{ mRow[row] = p;	return *this;										}
 		//! Sets a row.
 						Matrix4x4&	SetRow(const udword row, const Point& p)
 						{
@@ -136,9 +136,9 @@
 							return	*this;
 						}
 		//! Returns a column.
-						HPoint		GetCol(const udword col)		const
+						IceHPoint		GetCol(const udword col)		const
 						{
-							HPoint	Res;
+							IceHPoint	Res;
 							Res.x = m[0][col];
 							Res.y = m[1][col];
 							Res.z = m[2][col];
@@ -146,7 +146,7 @@
 							return	Res;
 						}
 		//! Sets a column.
-						Matrix4x4&	SetCol(const udword col, const HPoint& p)
+						Matrix4x4&	SetCol(const udword col, const IceHPoint& p)
 						{
 							m[0][col] = p.x;
 							m[1][col] = p.y;
@@ -299,8 +299,8 @@
 										m[3][0]*mat.m[0][3] + m[3][1]*mat.m[1][3] + m[3][2]*mat.m[2][3] + m[3][3]*mat.m[3][3]);
 									}
 
-		//! Operator for HPoint Mul = Matrix4x4 * HPoint;
-		inline_	HPoint				operator*(const HPoint& v)		const	{ return HPoint(GetRow(0)|v, GetRow(1)|v, GetRow(2)|v, GetRow(3)|v); }
+		//! Operator for IceHPoint Mul = Matrix4x4 * IceHPoint;
+		inline_	IceHPoint				operator*(const IceHPoint& v)		const	{ return IceHPoint(GetRow(0)|v, GetRow(1)|v, GetRow(2)|v, GetRow(3)|v); }
 
 		//! Operator for Point Mul = Matrix4x4 * Point;
 		inline_	Point				operator*(const Point& v)		const
@@ -375,7 +375,7 @@
 		//! Operator for Matrix4x4 *= Matrix4x4;
 				Matrix4x4&			operator*=(const Matrix4x4& mat)
 									{
-										HPoint TempRow;
+										IceHPoint TempRow;
 
 										GetRow(0, TempRow);
 										m[0][0] = TempRow.x*mat.m[0][0] + TempRow.y*mat.m[1][0] + TempRow.z*mat.m[2][0] + TempRow.w*mat.m[3][0];
@@ -425,8 +425,8 @@
 									return	*this;
 								}
 
-		inline_	const HPoint&	operator[](int row)		const	{ return *(const HPoint*)&m[row][0];	}
-		inline_	HPoint&			operator[](int row)				{ return *(HPoint*)&m[row][0];			}
+		inline_	const IceHPoint&	operator[](int row)		const	{ return *(const IceHPoint*)&m[row][0];	}
+		inline_	IceHPoint&			operator[](int row)				{ return *(IceHPoint*)&m[row][0];			}
 
 		public:
 

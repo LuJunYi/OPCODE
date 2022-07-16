@@ -12,30 +12,30 @@
 #ifndef __ICERANDOM_H__
 #define __ICERANDOM_H__
 
-	FUNCTION ICECORE_API	void	SRand(udword seed);
-	FUNCTION ICECORE_API	udword	Rand();
+	FUNCTION ICECORE_API	void	 SRand(u4dword seed);
+	FUNCTION ICECORE_API	 u4dword 	Rand();
 
 	//! Returns a unit random floating-point value
 	inline_ float UnitRandomFloat()	{ return float(Rand()) * ONE_OVER_RAND_MAX;	}
 
 	//! Returns a random index so that 0<= index < max_index
-	ICECORE_API	udword GetRandomIndex(udword max_index);
+	ICECORE_API	u4dword GetRandomIndex(u4dword max_index);
 
 	class ICECORE_API BasicRandom
 	{
 		public:
 
 		//! Constructor
-		inline_				BasicRandom(udword seed=0)	: mRnd(seed)	{}
+			inline_				BasicRandom(u4dword seed = 0) : mRnd(seed)	{}
 		//! Destructor
 		inline_				~BasicRandom()								{}
 
-		inline_	void		SetSeed(udword seed)		{ mRnd = seed;											}
-		inline_	udword		GetCurrentValue()	const	{ return mRnd;											}
-		inline_	udword		Randomize()					{ mRnd = mRnd * 2147001325 + 715136305; return mRnd;	}
+		inline_	void		SetSeed(u4dword seed)		{ mRnd = seed; }
+		inline_	u4dword		GetCurrentValue()	const	{ return mRnd; }
+		inline_	u4dword		Randomize()					{ mRnd = mRnd * 2147001325 + 715136305; return mRnd; }
 
 		private:
-				udword		mRnd;
+			u4dword		mRnd;
 	};
 
 #endif // __ICERANDOM_H__

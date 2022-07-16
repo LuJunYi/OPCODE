@@ -54,6 +54,7 @@
 		//
 		//	2) for(udword i=0;i<nb;i++)	dest[i] = value;
 		//
+#ifdef _M_IX86
 		_asm push eax
 		_asm push ecx
 		_asm push edi
@@ -64,6 +65,11 @@
 		_asm pop edi
 		_asm pop ecx
 		_asm pop eax
+#else
+
+		//²»²ÉÓÃ»ã±à£¬tangxw£¬2017-8-28
+		while (nb--)	*dest++ = value;
+#endif // _M_IX86
 	}
 
 	//!	Copies a buffer.

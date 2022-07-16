@@ -12,10 +12,17 @@
 #ifndef __ICEFPU_H__
 #define __ICEFPU_H__
 
+	//daixing edit
+//用到这里的地方都要格外注意：u4dword 在32位系统上，与64位系统上不一样。 最要不要用这一项。  在64位系统中，u4dword 已经被定义成8个字节的sign long long
+//因此，已经不再适用该类库
+
+//想法是好的，这里应该将本文件的u4dword
+
+
 	#define	SIGN_BITMASK			0x80000000
 
 	//! Integer representation of a floating-point value.
-	#define IR(x)					((udword&)(x))
+	#define IR(x)					((u4dword&)(x))
 
 	//! Signed integer representation of a floating-point value.
 	#define SIR(x)					((sdword&)(x))
@@ -34,29 +41,36 @@
 	//! Don't use it blindy, it can be faster or slower than the FPU comparison, depends on the context.
 	inline_ float FastFabs(float x)
 	{
-		udword FloatBits = IR(x)&0x7fffffff;
+		u4dword FloatBits = IR(x)&0x7fffffff;
 		return FR(FloatBits);
 	}
 
 	//! Fast square root for floating-point values.
 	inline_ float FastSqrt(float square)
 	{
-			float retval;
+#ifdef _M_IX86
+		float retval;
 
-			__asm {
-					mov             eax, square
-					sub             eax, 0x3F800000
-					sar             eax, 1
-					add             eax, 0x3F800000
-					mov             [retval], eax
-			}
-			return retval;
+		__asm {
+		mov             eax, square
+		sub             eax, 0x3F800000
+		sar             eax, 1
+		add             eax, 0x3F800000
+		mov             [retval], eax
+		}
+		return retval;
+#else
+
+		//换成C实现，求平方根，tangxw，2017-8-28
+		return sqrt(square);
+
+#endif // _M_IX86
 	}
 
 	//! Saturates positive to zero.
 	inline_ float fsat(float f)
 	{
-		udword y = (udword&)f & ~((sdword&)f >>31);
+		u4dword y = (u4dword&)f & ~((sdword&)f >>31);
 		return (float&)y;
 	}
 
@@ -64,7 +78,7 @@
 	inline_ float frsqrt(float f)
 	{
 		float x = f * 0.5f;
-		udword y = 0x5f3759df - ((udword&)f >> 1);
+		u4dword y = 0x5f3759df - ((u4dword&)f >> 1);
 		// Iteration...
 		(float&)y  = (float&)y * ( 1.5f - ( x * (float&)y * (float&)y ) );
 		// Result
@@ -74,7 +88,7 @@
 	//! Computes 1.0f / sqrtf(x). Comes from NVIDIA.
 	inline_ float InvSqrt(const float& x)
 	{
-		udword tmp = (udword(IEEE_1_0 << 1) + IEEE_1_0 - *(udword*)&x) >> 1;   
+		u4dword tmp = (u4dword(IEEE_1_0 << 1) + IEEE_1_0 - *(u4dword*)&x) >> 1;   
 		float y = *(float*)&tmp;                                             
 		return y * (1.47f - 0.47f * x * y * y);
 	}
@@ -100,7 +114,7 @@
 	//! TO BE DOCUMENTED
 	inline_ float fsqrt(float f)
 	{
-		udword y = ( ( (sdword&)f - 0x3f800000 ) >> 1 ) + 0x3f800000;
+		u4dword y = ( ( (sdword&)f - 0x3f800000 ) >> 1 ) + 0x3f800000;
 		// Iteration...?
 		// (float&)y = (3.0f - ((float&)y * (float&)y) / f) * (float&)y * 0.5f;
 		// Result
@@ -110,8 +124,8 @@
 	//! Returns the float ranged espilon value.
 	inline_ float fepsilon(float f)
 	{
-		udword b = (udword&)f & 0xff800000;
-		udword a = b | 0x00000001;
+		u4dword b = (u4dword&)f & 0xff800000;
+		u4dword a = b | 0x00000001;
 		(float&)a -= (float&)b;
 		// Result
 		return (float&)a;
@@ -169,7 +183,7 @@
 	inline_ float ComputeFloatEpsilon()
 	{
 		float f = 1.0f;
-		((udword&)f)^=1;
+		((u4dword&)f)^=1;
 		return f - 1.0f;	// You can check it's the same as FLT_EPSILON
 	}
 
@@ -221,32 +235,45 @@
 	//! A global function to find MAX(a,b) using FCOMI/FCMOV
 	inline_ float FCMax2(float a, float b)
 	{
+#ifdef _M_IX86
 		float Res;
-		_asm	fld		[a]
-		_asm	fld		[b]
-		FCOMI_ST1
-		FCMOVB_ST1
-		_asm	fstp	[Res]
-		_asm	fcomp
+		_asm	fld[a]
+			_asm	fld[b]
+			FCOMI_ST1
+			FCMOVB_ST1
+			_asm	fstp[Res]
+			_asm	fcomp
 		return Res;
+#else
+
+		//换成C写求两个值的最大值，tangxw，2017-8-28
+		return MAX(a, b);
+#endif // _M_IX86
 	}
 
 	//! A global function to find MIN(a,b) using FCOMI/FCMOV
 	inline_ float FCMin2(float a, float b)
 	{
+#ifdef _M_IX86
 		float Res;
-		_asm	fld		[a]
-		_asm	fld		[b]
-		FCOMI_ST1
-		FCMOVNB_ST1
-		_asm	fstp	[Res]
-		_asm	fcomp
+		_asm	fld[a]
+			_asm	fld[b]
+			FCOMI_ST1
+			FCMOVNB_ST1
+			_asm	fstp[Res]
+			_asm	fcomp
 		return Res;
+#else
+
+		//换成C写求两个值的最小值，tangxw，2017-8-28
+		return MIN(a, b);
+#endif // _M_IX86
 	}
 
 	//! A global function to find MAX(a,b,c) using FCOMI/FCMOV
 	inline_ float FCMax3(float a, float b, float c)
 	{
+#ifdef _M_IX86
 		float Res;
 		_asm	fld		[a]
 		_asm	fld		[b]
@@ -258,11 +285,16 @@
 		_asm	fstp	[Res]
 		_asm	fcompp
 		return Res;
+#else
+		//换成C写求三个值的最大值，tangxw，2017-8-28
+		return MAXMAX(a, b, c);
+#endif // _M_IX86
 	}
 
 	//! A global function to find MIN(a,b,c) using FCOMI/FCMOV
 	inline_ float FCMin3(float a, float b, float c)
 	{
+#ifdef _M_IX86
 		float Res;
 		_asm	fld		[a]
 		_asm	fld		[b]
@@ -274,6 +306,11 @@
 		_asm	fstp	[Res]
 		_asm	fcompp
 		return Res;
+#else
+
+		//换成C写求三个值的最小值，tangxw，2017-8-28
+		return MINMIN(a, b, c);
+#endif // _M_IX86
 	}
 
 	inline_ int ConvertToSortable(float f)

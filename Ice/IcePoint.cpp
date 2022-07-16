@@ -35,7 +35,7 @@
  *	One way to handle it at compile-time would be to use different classes for Point & Vector3, only overloading operator "-" for vectors.
  *	But then, you get a lot of redundant code in thoses classes, and basically it's really a lot of useless work.
  *
- *	Another way would be to use homogeneous points: w=1 for points, w=0 for vectors. That's why the HPoint class exists. Now, to store
+ *	Another way would be to use homogeneous points: w=1 for points, w=0 for vectors. That's why the IceHPoint class exists. Now, to store
  *	your model's vertices and in most cases, you really want to use Points to save ram.
  *
  *	\class		Point
@@ -82,7 +82,7 @@ Point& Point::UnitRandomVector()
 
 // Cast operator
 // WARNING: not inlined
-Point::operator HPoint() const	{ return HPoint(x, y, z, 0.0f); }
+Point::operator IceHPoint() const	{ return IceHPoint(x, y, z, 0.0f); }
 
 Point& Point::Refract(const Point& eye, const Point& n, float refractindex, Point& refracted)
 {
@@ -112,9 +112,9 @@ Point& Point::ProjectToPlane(const Plane& p)
 	return *this;
 }
 
-void Point::ProjectToScreen(float halfrenderwidth, float halfrenderheight, const Matrix4x4& mat, HPoint& projected) const
+void Point::ProjectToScreen(float halfrenderwidth, float halfrenderheight, const Matrix4x4& mat, IceHPoint& projected) const
 {
-	projected = HPoint(x, y, z, 1.0f) * mat;
+	projected = IceHPoint(x, y, z, 1.0f) * mat;
 	projected.w = 1.0f / projected.w;
 
 	projected.x*=projected.w;
